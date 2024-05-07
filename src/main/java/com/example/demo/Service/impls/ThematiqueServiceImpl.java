@@ -71,5 +71,60 @@ public class ThematiqueServiceImpl implements ThematiqueService {
 
         groupeRepository.saveAll(groupes);
     }
+    @Override
+    @Transactional
+    public Thematique update(Thematique updatedThematique) {
+        Integer thematiqueId = updatedThematique.getId();
+
+        // Find the existing Thematique entity by ID
+        Thematique existingThematique = findById(thematiqueId);
+        if (existingThematique == null) {
+            throw new RuntimeException("Thematique with ID " + thematiqueId + " not found.");
+        }
+
+        // Update the Thematique entity properties
+        existingThematique.setCoutLogistique(updatedThematique.getCoutLogistique());
+        existingThematique.setCoutPedagogique(updatedThematique.getCoutPedagogique());
+        existingThematique.setDateDebut(updatedThematique.getDateDebut());
+        existingThematique.setDateFin(updatedThematique.getDateFin());
+        existingThematique.setDomaineFormation(updatedThematique.getDomaineFormation());
+        existingThematique.setIntitule(updatedThematique.getIntitule());
+        existingThematique.setNbrFormateurExtr(updatedThematique.getNbrFormateurExtr());
+        existingThematique.setNbrFormateurIntr(updatedThematique.getNbrFormateurIntr());
+        existingThematique.setNbrJoursFormation(updatedThematique.getNbrJoursFormation());
+        existingThematique.setObjectif(updatedThematique.getObjectif());
+        existingThematique.setPopulationCible(updatedThematique.getPopulationCible());
+        existingThematique.setPrestataire(updatedThematique.getPrestataire());
+        existingThematique.setNbrGroupe(updatedThematique.getNbrGroupe());
+
+        // Update associated Groupe entities based on nbrGroupe change
+        updateGroupeEntities(existingThematique);
+
+        // Save and return the updated Thematique entity
+        return thematiqueRepository.save(existingThematique);
+    }
+
+    private void updateGroupeEntities(Thematique thematique) {
+        int updatedNbrGroupe = thematique.getNbrGroupe();
+        List<Groupe> groupes = thematique.getGroupes();
+
+        // Remove excess groupes if nbrGroupe is reduced
+        if (updatedNbrGroupe < groupes.size()) {
+            List<Groupe> groupesToRemove = groupes.subList(updatedNbrGroupe, groupes.size());
+            groupeRepository.deleteAll(groupesToRemove);
+            groupes.removeAll(groupesToRemove);
+        }
+        // Add new groupes if nbrGroupe is increased
+        else if (updatedNbrGroupe > groupes.size()) {
+            for (int i = groupes.size() + 1; i <= updatedNbrGroupe; i++) {
+                Groupe groupe = new Groupe();
+                groupe.setNumGroupe("Groupe " + i);
+                groupe.setThematique(thematique);
+                groupes.add(groupe);
+            }
+            groupeRepository.saveAll(groupes.subList(groupes.size() - (updatedNbrGroupe - groupes.size()), groupes.size()));
+        }
+        // No action needed if nbrGroupe is unchanged
+    }
 
 }

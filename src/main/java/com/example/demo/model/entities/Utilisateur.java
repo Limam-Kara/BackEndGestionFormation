@@ -1,6 +1,7 @@
 package com.example.demo.model.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
@@ -67,6 +68,9 @@ public class Utilisateur implements UserDetails {
     @OneToMany(mappedBy = "utilisateur")
     private List<Token> tokens;
 
+    @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Formation> formations;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @OnDelete(action = OnDeleteAction.CASCADE)

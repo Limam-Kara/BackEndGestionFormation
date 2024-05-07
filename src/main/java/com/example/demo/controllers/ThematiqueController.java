@@ -38,6 +38,18 @@ public class ThematiqueController {
         return new ResponseEntity<>(savedThematique, HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Thematique> updateThematique(@PathVariable Integer id, @RequestBody Thematique updatedThematique) {
+        try {
+            updatedThematique.setId(id); // Ensure the ID is set for the updated entity
+            Thematique savedThematique = thematiqueService.update(updatedThematique);
+            return new ResponseEntity<>(savedThematique, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteThematiqueById(@PathVariable Integer id) {
         thematiqueService.deleteById(id);

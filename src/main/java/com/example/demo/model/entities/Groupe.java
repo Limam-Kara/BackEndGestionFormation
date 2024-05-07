@@ -1,5 +1,6 @@
 package com.example.demo.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.Data;
 import jakarta.persistence.*;
 
@@ -18,7 +19,8 @@ public class Groupe {
     private String numGroupe;
 
     @ManyToOne
-    @JoinColumn(name = "id_thematique", referencedColumnName = "id")
+    @JoinColumn(name = "thematique_id")
+    @JsonBackReference
     private Thematique thematique;
 
     @ManyToMany

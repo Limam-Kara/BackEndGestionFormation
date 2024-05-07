@@ -41,6 +41,10 @@ public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsSe
         Optional<Utilisateur> optionalUtilisateur = utilisateurRepository.findByUsername(username);
         return optionalUtilisateur.orElse(null);
     }
+    public Utilisateur getUtilisateurById(Integer id) {
+        Optional<Utilisateur> optionalUtilisateur = utilisateurRepository.findById(id);
+        return optionalUtilisateur.orElse(null);
+    }
 
     @Override
     public List<Utilisateur> getAllUtilisateurs() {

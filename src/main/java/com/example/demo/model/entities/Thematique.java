@@ -1,8 +1,10 @@
 package com.example.demo.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
 import jakarta.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "thematique")
@@ -51,5 +53,8 @@ public class Thematique {
 
     @Column(name = "prestataire")
     private String prestataire;
+    @OneToMany(mappedBy = "thematique", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
+    private List<Groupe> groupes;
 }
 
