@@ -9,6 +9,7 @@ import com.example.demo.model.repositories.ThematiqueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -65,6 +66,10 @@ public class GroupServiceImpl implements GroupService {
     public Groupe getGroupById(Integer id) {
         Optional<Groupe> optionalGroupe = groupeRepository.findById(id);
         return optionalGroupe.orElseThrow(() -> new RuntimeException("Group not found with ID: " + id));
+    }
+    @Override
+    public List<Groupe> getAllGroups() {
+        return groupeRepository.findAll(); // Fetch all groups from repository
     }
 
 }

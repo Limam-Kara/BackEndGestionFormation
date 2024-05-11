@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/groups")
 public class GroupController {
@@ -52,5 +55,26 @@ public class GroupController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
+    @GetMapping("/all")
+    public ResponseEntity<List<Groupe>> getAllGroups() {
+        try {
+            List<Groupe> groups = groupService.getAllGroups();
+            return new ResponseEntity<>(groups, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+    @GetMapping("/{groupId}")
+    public ResponseEntity<?> getGroupById(@PathVariable Integer groupId) {
+        try {
+            Groupe group = groupService.getGroupById(groupId);
+            if (group != null) {
+                return new ResponseEntity<>(group, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>("Group not found with ID: " + groupId, HttpStatus.NOT_FOUND);
+            }
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
