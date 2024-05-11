@@ -4,6 +4,9 @@ import com.example.demo.Service.GroupService;
 import com.example.demo.Service.UtilisateurService;
 import com.example.demo.model.entities.Groupe;
 import com.example.demo.model.entities.Utilisateur;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,5 +55,13 @@ public class GroupController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
+    @GetMapping("/{groupId}/users")
+    public ResponseEntity<List<Utilisateur>> getUsersInGroup(@PathVariable Integer groupId) {
+        try {
+            List<Utilisateur> usersInGroup = groupService.getAllUsersInGroup(groupId);
+            return new ResponseEntity<>(usersInGroup, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // or any appropriate error response
+        }
+    }
 }

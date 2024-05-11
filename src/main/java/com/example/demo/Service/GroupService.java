@@ -3,6 +3,7 @@ package com.example.demo.Service;
 import com.example.demo.model.entities.Groupe;
 import com.example.demo.model.entities.Utilisateur;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface GroupService {
@@ -12,5 +13,7 @@ public interface GroupService {
     void updateGroup(Groupe groupe);
 
     public Groupe getGroupById(Integer id);
+
+	List<Utilisateur> getAllUsersInGroup(Integer groupId);
 
 }

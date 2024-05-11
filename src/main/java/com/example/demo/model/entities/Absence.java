@@ -16,6 +16,7 @@ public class Absence {
     @Column(name = "etat_absence")
     private String etatAbsence;
 
+    
     @Column(name = "date_absence")
     private LocalDate dateAbsence;
 
