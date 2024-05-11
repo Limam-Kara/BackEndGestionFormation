@@ -13,6 +13,7 @@ public interface GroupService {
     void updateGroup(Groupe groupe);
 
     Groupe getGroupById(Integer id);
-
+ 
+	List<Utilisateur> getAllUsersInGroup(Integer groupId);
      List<Groupe> getAllGroups();
 }
