@@ -12,8 +12,8 @@ public interface GroupService {
 
     void updateGroup(Groupe groupe);
 
-    public Groupe getGroupById(Integer id);
-
+    Groupe getGroupById(Integer id);
+ 
 	List<Utilisateur> getAllUsersInGroup(Integer groupId);
-
+     List<Groupe> getAllGroups();
 }

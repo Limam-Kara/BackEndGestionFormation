@@ -67,6 +67,7 @@ public class GroupServiceImpl implements GroupService {
         Optional<Groupe> optionalGroupe = groupeRepository.findById(id);
         return optionalGroupe.orElseThrow(() -> new RuntimeException("Group not found with ID: " + id));
     }
+
     public List<Utilisateur> getAllUsersInGroup(Integer groupId) {
         Optional<Groupe> groupeOptional = groupeRepository.findById(groupId);
         if (groupeOptional.isPresent()) {
@@ -76,6 +77,11 @@ public class GroupServiceImpl implements GroupService {
             // Handle the case where the group with the given id doesn't exist
             throw new RuntimeException("Group not found with id: " + groupId);
         }
+
+    @Override
+    public List<Groupe> getAllGroups() {
+        return groupeRepository.findAll(); // Fetch all groups from repository
+
     }
 
 }
