@@ -77,7 +77,7 @@ public class GroupServiceImpl implements GroupService {
             // Handle the case where the group with the given id doesn't exist
             throw new RuntimeException("Group not found with id: " + groupId);
         }
-
+    }
     @Override
     public List<Groupe> getAllGroups() {
         return groupeRepository.findAll(); // Fetch all groups from repository

@@ -66,7 +66,8 @@ public class GroupController {
             return new ResponseEntity<>(usersInGroup, HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND); // or any appropriate error response
-
+        }
+    }
     @GetMapping("/all")
     public ResponseEntity<List<Groupe>> getAllGroups() {
         try {
