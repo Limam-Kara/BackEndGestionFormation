@@ -9,4 +9,12 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Intege
     public Optional<Utilisateur> findById(Integer id);
 
     Optional<Utilisateur> findByEmail(String email);
+    boolean existsByPpr(String ppr);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
+
+ 
+
 }

@@ -18,20 +18,34 @@ public class UtilisateurController {
     private UtilisateurService utilisateurService;
 
     @PostMapping("/save")
-    public ResponseEntity<Utilisateur> saveUtilisateur(@RequestBody Utilisateur utilisateur) {
+    public ResponseEntity<?> saveUtilisateur(@RequestBody Utilisateur utilisateur) {
         try {
             Utilisateur savedUtilisateur = utilisateurService.saveUtilisateur(utilisateur);
             return new ResponseEntity<>(savedUtilisateur, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
     @GetMapping("/{username}")
     public ResponseEntity<Utilisateur> getUtilisateurByUsername(@PathVariable String username) {
         try {
             Utilisateur utilisateur = utilisateurService.getUtilisateurByUsername(username);
+            if (utilisateur != null) {
+                return new ResponseEntity<>(utilisateur, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("/byId/{id}")
+    public ResponseEntity<Utilisateur> getUtilisateurById(@PathVariable Integer id) {
+        try {
+            Utilisateur utilisateur = utilisateurService.getUtilisateurById(id);
             if (utilisateur != null) {
                 return new ResponseEntity<>(utilisateur, HttpStatus.OK);
             } else {
@@ -53,14 +67,26 @@ public class UtilisateurController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<Utilisateur> editUtilisateur(@RequestBody Utilisateur utilisateur) {
+    public ResponseEntity<?> editUtilisateur(@RequestBody Utilisateur utilisateur) {
         try {
+            // Attempt to edit the utilisateur
             Utilisateur updatedUtilisateur = utilisateurService.editUtilisateur(utilisateur);
             return new ResponseEntity<>(updatedUtilisateur, HttpStatus.OK);
         } catch (RuntimeException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND); // Handle not found exception
+            // Handle runtime exceptions (e.g., utilisateur not found, conflict)
+            if (e.getMessage().contains("Utilisateur with ID")) {
+                // Utilisateur not found
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            } else if (e.getMessage().contains("Another utilisateur")) {
+                // Conflict with existing utilisateur
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+            } else {
+                // Other runtime exceptions
+                return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            // Handle other unexpected exceptions
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

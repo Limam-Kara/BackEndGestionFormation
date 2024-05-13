@@ -11,6 +11,6 @@ public interface  UtilisateurService {
     List<Utilisateur> getAllUtilisateurs();
     Utilisateur editUtilisateur(Utilisateur utilisateur);
     void deleteUtilisateur(Integer id);
-
+    boolean isUtilisateurExists(Utilisateur utilisateur);
 
 }
