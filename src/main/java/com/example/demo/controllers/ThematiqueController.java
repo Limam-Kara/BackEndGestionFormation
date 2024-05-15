@@ -15,7 +15,16 @@ public class ThematiqueController {
 
     @Autowired
     private ThematiqueService thematiqueService;
-
+    
+    @GetMapping("/{thematique_id}/thematique")
+    public ResponseEntity<Thematique> getThematiqueByGroupeId(@PathVariable Integer thematique_id) {
+        Thematique thematique = thematiqueService.getThematiqueByGroupeId(thematique_id);
+        if (thematique != null) {
+            return new ResponseEntity<>(thematique, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
     @GetMapping("/{id}")
     public ResponseEntity<Thematique> getThematiqueById(@PathVariable Integer id) {
         Thematique thematique = thematiqueService.findById(id);

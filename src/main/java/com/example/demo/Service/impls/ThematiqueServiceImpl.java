@@ -20,7 +20,12 @@ public class ThematiqueServiceImpl implements ThematiqueService {
 
     private final ThematiqueRepository thematiqueRepository;
     private final GroupeRepository groupeRepository;
-
+    
+    
+    public Thematique getThematiqueByGroupeId(Integer groupId) {
+        return thematiqueRepository.findThematiqueByGroupeId(groupId);
+    }
+    
     public ThematiqueServiceImpl(ThematiqueRepository thematiqueRepository, GroupeRepository groupeRepository) {
         this.thematiqueRepository = thematiqueRepository;
         this.groupeRepository = groupeRepository;
