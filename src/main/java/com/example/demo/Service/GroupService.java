@@ -18,4 +18,6 @@ public interface GroupService {
      List<Groupe> getAllGroups();
      void removeUserFromGroup(Utilisateur utilisateur, Groupe groupe);
 
+	void updateGroupAndAssignUser(Utilisateur utilisateur, Groupe updatedGroup);
+
 }
