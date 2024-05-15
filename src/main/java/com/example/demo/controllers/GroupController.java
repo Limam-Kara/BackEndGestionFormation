@@ -46,19 +46,31 @@ public class GroupController {
         }
     }
 
-    @PutMapping("/update/{groupId}")
-    public ResponseEntity<String> updateGroup(
-            @PathVariable Integer groupId,
-            @RequestBody Groupe groupe) {
-        groupe.setId(groupId);
+//    @PutMapping("/update/{groupId}")
+//    public ResponseEntity<String> updateGroup(
+//            @PathVariable Integer groupId,
+//            @RequestBody Groupe groupe) {
+//        groupe.setId(groupId);
+//        try {
+//            groupService.updateGroup(groupe);
+//            return new ResponseEntity<>("Group updated successfully.", HttpStatus.OK);
+//        } catch (RuntimeException e) {
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+//        }
+//    }
+    @PutMapping("/updateAndAssignUser")
+    public ResponseEntity<String> updateGroupAndAssignUser(
+    		@RequestParam Integer userId,
+            @RequestParam Integer groupId) {
         try {
-            groupService.updateGroup(groupe);
-            return new ResponseEntity<>("Group updated successfully.", HttpStatus.OK);
+        	Utilisateur utilisateur = utilisateurService.getUtilisateurById(userId);
+            Groupe updatedGroup = groupService.getGroupById(groupId);
+            groupService.updateGroupAndAssignUser(utilisateur, updatedGroup);
+            return new ResponseEntity<>("Groupe mis à jour et utilisateur réaffecté avec succès.", HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-
     @GetMapping("/{groupId}/users")
     public ResponseEntity<List<Utilisateur>> getUsersInGroup(@PathVariable Integer groupId) {
         try {

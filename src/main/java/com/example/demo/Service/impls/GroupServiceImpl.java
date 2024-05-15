@@ -77,6 +77,49 @@ public class GroupServiceImpl implements GroupService {
         groupeRepository.save(groupe);
     }
 
+ 
+ 
+
+    public void updateGroupAndAssignUser(Utilisateur utilisateur, Groupe groupe) {
+    	String populationCible = groupe.getThematique().getPopulationCible();
+        if (!isValidNumericString(populationCible)) {
+            throw new RuntimeException("Invalid target population format: " + populationCible);
+        }
+
+        int targetPopulation = Integer.parseInt(populationCible);
+        if (groupe.getUtilisateurs().size() >= targetPopulation) {
+            throw new RuntimeException("La population du groupe a atteint ou dépassé la cible!");
+        }
+
+        // Check if the user already exists in the group
+        for (Utilisateur existingUser : groupe.getUtilisateurs()) {
+            if (existingUser.getId().equals(utilisateur.getId())) {
+                throw new RuntimeException("L’utilisateur existe déjà dans le groupe!");
+            }
+        }
+
+        // Check if the user already exists in another group within the same thematic area
+        List<Groupe> groupsInSameThematic = groupeRepository.findByThematiqueId(groupe.getThematique().getId());
+        for (Groupe otherGroup : groupsInSameThematic) {
+            if (!otherGroup.getId().equals(groupe.getId())) { // Skip the current group
+                for (Utilisateur existingUser : otherGroup.getUtilisateurs()) {
+                    if (existingUser.getId().equals(utilisateur.getId())) {
+                        // User exists in another group of the same thematic area, so remove from that group and add to the new group
+                        otherGroup.getUtilisateurs().remove(existingUser);
+                        groupe.getUtilisateurs().add(utilisateur);
+                        groupeRepository.save(groupe);
+                        groupeRepository.save(otherGroup);
+                        return; // Exit the method after reassignment
+                    }
+                }
+            }
+        }
+
+        // If user doesn't exist in any other group within the same thematic area, simply add to the new group
+        groupe.getUtilisateurs().add(utilisateur);
+        groupeRepository.save(groupe);
+    }
+
     private boolean isValidNumericString(String str) {
         if (str == null) {
             return false;
@@ -88,19 +131,17 @@ public class GroupServiceImpl implements GroupService {
             return false;
         }
     }
- 
 
-
-    @Override
-    public void updateGroup(Groupe groupe) {
-        Thematique thematique = groupe.getThematique();
-        int totalPopulation = groupeRepository.getTotalPopulationByThematiqueId(thematique.getId());
-        if (totalPopulation >= Integer.parseInt(thematique.getPopulationCible())) {
-            throw new RuntimeException("Total population of groups exceeds or meets the target population for the theme.");
-        }
-
-        groupeRepository.save(groupe);
-    }
+//    @Override
+//    public void updateGroup(Groupe groupe) {
+//        Thematique thematique = groupe.getThematique();
+//        int totalPopulation = groupeRepository.getTotalPopulationByThematiqueId(thematique.getId());
+//        if (totalPopulation >= Integer.parseInt(thematique.getPopulationCible())) {
+//            throw new RuntimeException("Total population of groups exceeds or meets the target population for the theme.");
+//        }
+//
+//        groupeRepository.save(groupe);
+//    }
     @Override
     public Groupe getGroupById(Integer id) {
         Optional<Groupe> optionalGroupe = groupeRepository.findById(id);
@@ -130,5 +171,11 @@ public class GroupServiceImpl implements GroupService {
         } else {
             throw new RuntimeException("L’utilisateur ne fait pas partie du groupe\r\n");
         }}
+
+	@Override
+	public void updateGroup(Groupe groupe) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
