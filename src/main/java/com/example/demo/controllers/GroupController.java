@@ -90,4 +90,18 @@ public class GroupController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    @DeleteMapping("/removeUser")
+    public ResponseEntity<String> removeUserFromGroup(
+            @RequestParam Integer userId,
+            @RequestParam Integer groupId) {
+        try {
+            Utilisateur utilisateur = utilisateurService.getUtilisateurById(userId);
+            Groupe groupe = groupService.getGroupById(groupId);
+            groupService.removeUserFromGroup(utilisateur, groupe);
+            return new ResponseEntity<>("Utilisateur supprimé du groupe avec succès\r\n"
+            		+ ".", HttpStatus.OK);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

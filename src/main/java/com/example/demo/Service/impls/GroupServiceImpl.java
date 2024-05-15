@@ -122,5 +122,13 @@ public class GroupServiceImpl implements GroupService {
         return groupeRepository.findAll(); // Fetch all groups from repository
 
     }
+    @Override
+    public void removeUserFromGroup(Utilisateur utilisateur, Groupe groupe) {
+        if (groupe.getUtilisateurs().contains(utilisateur)) {
+            groupe.getUtilisateurs().remove(utilisateur);
+            groupeRepository.save(groupe);
+        } else {
+            throw new RuntimeException("L’utilisateur ne fait pas partie du groupe\r\n");
+        }}
 
 }
