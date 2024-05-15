@@ -24,6 +24,25 @@ public class GroupServiceImpl implements GroupService {
         this.thematiqueRepository = thematiqueRepository;
     }
 
+//    public void affectUserToGroup(Utilisateur utilisateur, Groupe groupe) {
+//        String populationCible = groupe.getThematique().getPopulationCible();
+//        if (!isValidNumericString(populationCible)) {
+//            throw new RuntimeException("Invalid target population format: " + populationCible);
+//        }
+//
+//        int targetPopulation = Integer.parseInt(populationCible);
+//        if (groupe.getUtilisateurs().size() >= targetPopulation) {
+//            throw new RuntimeException("La population du groupe a atteint ou dépassé la cible!");
+//        }
+//     // Check if the user already exists in the group
+//        for (Utilisateur existingUser : groupe.getUtilisateurs()) {
+//            if (existingUser.getId().equals(utilisateur.getId())) {
+//                throw new RuntimeException("L’utilisateur existe déjà dans le groupe!");
+//            }
+//        }
+//        groupe.getUtilisateurs().add(utilisateur);
+//        groupeRepository.save(groupe);
+//    }
     public void affectUserToGroup(Utilisateur utilisateur, Groupe groupe) {
         String populationCible = groupe.getThematique().getPopulationCible();
         if (!isValidNumericString(populationCible)) {
@@ -34,18 +53,32 @@ public class GroupServiceImpl implements GroupService {
         if (groupe.getUtilisateurs().size() >= targetPopulation) {
             throw new RuntimeException("La population du groupe a atteint ou dépassé la cible!");
         }
-     // Check if the user already exists in the group
+
+        // Check if the user already exists in the group
         for (Utilisateur existingUser : groupe.getUtilisateurs()) {
             if (existingUser.getId().equals(utilisateur.getId())) {
                 throw new RuntimeException("L’utilisateur existe déjà dans le groupe!");
             }
         }
+
+        // Check if the user already exists in another group within the same thematic area
+        List<Groupe> groupsInSameThematic = groupeRepository.findByThematiqueId(groupe.getThematique().getId());
+        for (Groupe otherGroup : groupsInSameThematic) {
+            if (!otherGroup.getId().equals(groupe.getId())) { // Skip the current group
+                for (Utilisateur existingUser : otherGroup.getUtilisateurs()) {
+                    if (existingUser.getId().equals(utilisateur.getId())) {
+                        throw new RuntimeException("L’utilisateur existe déjà dans un autre groupe de la même thématique!");
+                    }
+                }
+            }
+        }
+
         groupe.getUtilisateurs().add(utilisateur);
         groupeRepository.save(groupe);
     }
 
     private boolean isValidNumericString(String str) {
-        if (str == null || str.isEmpty()) {
+        if (str == null) {
             return false;
         }
         try {
@@ -55,6 +88,7 @@ public class GroupServiceImpl implements GroupService {
             return false;
         }
     }
+ 
 
 
     @Override
