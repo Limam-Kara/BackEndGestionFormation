@@ -17,4 +17,9 @@ public class AbsenceServiceImpl {
 	    public List<Absence> saveAbsences(List<Absence> absences) {
 	        return absenceRepository.saveAll(absences);
 	    }
+
+	    public List<Absence> getAllAbsences() {
+	        return absenceRepository.findAll();
+	    }
+	    
 }

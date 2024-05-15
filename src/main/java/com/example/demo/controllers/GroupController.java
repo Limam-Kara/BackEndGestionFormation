@@ -40,7 +40,7 @@ public class GroupController {
 
 
             groupService.affectUserToGroup(utilisateur, groupe);
-            return new ResponseEntity<>("User assigned to group successfully.", HttpStatus.OK);
+            return new ResponseEntity<>("Bénéficiare affecté au groupe avec succès .", HttpStatus.OK);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }

@@ -15,5 +15,7 @@ public interface ThematiqueService {
     void deleteById(Integer id);
     void createGroupsForThematique(Thematique thematique);
     public Thematique update(Thematique updatedThematique);
+
+	Thematique getThematiqueByGroupeId(Integer groupeId);
 }
 

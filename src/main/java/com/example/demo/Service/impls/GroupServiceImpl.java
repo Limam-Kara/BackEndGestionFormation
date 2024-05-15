@@ -32,9 +32,14 @@ public class GroupServiceImpl implements GroupService {
 
         int targetPopulation = Integer.parseInt(populationCible);
         if (groupe.getUtilisateurs().size() >= targetPopulation) {
-            throw new RuntimeException("Group population has reached or exceeded the target.");
+            throw new RuntimeException("La population du groupe a atteint ou dépassé la cible!");
         }
-
+     // Check if the user already exists in the group
+        for (Utilisateur existingUser : groupe.getUtilisateurs()) {
+            if (existingUser.getId().equals(utilisateur.getId())) {
+                throw new RuntimeException("L’utilisateur existe déjà dans le groupe!");
+            }
+        }
         groupe.getUtilisateurs().add(utilisateur);
         groupeRepository.save(groupe);
     }
