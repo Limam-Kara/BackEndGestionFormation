@@ -16,4 +16,6 @@ public interface GroupService {
  
 	List<Utilisateur> getAllUsersInGroup(Integer groupId);
      List<Groupe> getAllGroups();
+     void removeUserFromGroup(Utilisateur utilisateur, Groupe groupe);
+
 }
