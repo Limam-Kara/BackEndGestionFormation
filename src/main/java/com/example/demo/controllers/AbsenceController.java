@@ -30,6 +30,7 @@ import com.example.demo.model.entities.Absence;
 	            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 	        }
 	    }
+	    
 	    @GetMapping("/all")
 	    public ResponseEntity<List<Absence>> getAllAbsences() {
 	        try {
