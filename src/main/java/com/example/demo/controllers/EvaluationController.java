@@ -50,4 +50,8 @@ public class EvaluationController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    @GetMapping("/evaluations")
+    public List<Evaluation> getAllEvaluations() {
+        return evaluationService.getAllEvaluations();
+    }
 }

@@ -73,4 +73,10 @@ public class EvaluationServiceImpl implements EvaluationService {
     public List<Q_Reponse> getResponsesForEvaluation(Integer evaluationId) {
         return qReponseRepository.findAllByEvaluationId(evaluationId);
     }
+
+    @Override
+    public List<Evaluation> getAllEvaluations() {
+        return evaluationRepository.findAll();
+    }
+
 }

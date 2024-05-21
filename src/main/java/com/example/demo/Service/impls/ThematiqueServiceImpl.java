@@ -56,6 +56,7 @@ public class ThematiqueServiceImpl implements ThematiqueService {
     @Override
     public void deleteById(Integer id) {
         try {
+        	
             thematiqueRepository.deleteById(id);
         } catch (Exception e) {
             // Handle specific exceptions here (e.g., EmptyResultDataAccessException)
