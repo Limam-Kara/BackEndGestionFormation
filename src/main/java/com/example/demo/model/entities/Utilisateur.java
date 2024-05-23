@@ -1,6 +1,7 @@
 package com.example.demo.model.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
@@ -77,7 +78,7 @@ public class Utilisateur implements UserDetails {
     @JoinColumn(name = "id_role")
     private Role idRole;
 
-
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(idRole.getNom()));
