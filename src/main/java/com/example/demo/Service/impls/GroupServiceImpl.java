@@ -6,6 +6,8 @@ import com.example.demo.model.entities.Thematique;
 import com.example.demo.model.entities.Utilisateur;
 import com.example.demo.model.repositories.GroupeRepository;
 import com.example.demo.model.repositories.ThematiqueRepository;
+import com.example.demo.model.repositories.UtilisateurRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +16,15 @@ import java.util.Optional;
 
 @Service
 public class GroupServiceImpl implements GroupService {
-
+    
+private final UtilisateurRepository utilisateurRepository;
     private final GroupeRepository groupeRepository;
     private final ThematiqueRepository thematiqueRepository;
 
     @Autowired
-    public GroupServiceImpl(GroupeRepository groupeRepository, ThematiqueRepository thematiqueRepository) {
-        this.groupeRepository = groupeRepository;
+    public GroupServiceImpl(GroupeRepository groupeRepository, ThematiqueRepository thematiqueRepository,UtilisateurRepository utilisateurRepository) {
+        this.utilisateurRepository = utilisateurRepository;
+		this.groupeRepository = groupeRepository;
         this.thematiqueRepository = thematiqueRepository;
     }
 
@@ -177,5 +181,15 @@ public class GroupServiceImpl implements GroupService {
 		// TODO Auto-generated method stub
 		
 	}
+	 @Override
+	    public List<Groupe> getGroupsByUserId(Integer userId) {
+	        Optional<Utilisateur> utilisateurOptional = utilisateurRepository.findById(userId);
+	        if (utilisateurOptional.isPresent()) {
+	            Utilisateur utilisateur = utilisateurOptional.get();
+	            return groupeRepository.findByUtilisateursContains(utilisateur);
+	        } else {
+	            throw new RuntimeException("Utilisateur not found with ID: " + userId);
+	        }
+	    }
 
 }

@@ -1,6 +1,8 @@
 package com.example.demo.model.repositories;
 
 import com.example.demo.model.entities.Groupe;
+import com.example.demo.model.entities.Utilisateur;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,5 +17,7 @@ public interface GroupeRepository extends JpaRepository<Groupe, Integer> {
     @Query("SELECT SUM(CAST(g.thematique.populationCible AS Integer)) FROM Groupe g WHERE g.thematique.id = :thematiqueId")
     Integer getTotalPopulationByThematiqueId(@Param("thematiqueId") Integer thematiqueId);
     List<Groupe> findByThematiqueId(Integer thematiqueId);
+
+	List<Groupe> findByUtilisateursContains(Utilisateur utilisateur);
 
 }

@@ -116,4 +116,13 @@ public class GroupController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Groupe>> getGroupsByUserId(@PathVariable Integer userId) {
+        try {
+            List<Groupe> groups = groupService.getGroupsByUserId(userId);
+            return ResponseEntity.ok(groups);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
 }
