@@ -78,5 +78,12 @@ public class EvaluationServiceImpl implements EvaluationService {
     public List<Evaluation> getAllEvaluations() {
         return evaluationRepository.findAll();
     }
-
+ // Method to delete evaluations by beneficiareId 
+    public void deleteEvaluationsByBeneficiareId(Integer beneficiareId) {
+        evaluationRepository.deleteByBeneficiareId(beneficiareId);
+    }
+    // Method to delete evaluations by thematique ID
+    public void deleteEvaluationsByThematiqueId(Integer thematiqueId) {
+        evaluationRepository.deleteByThematiqueId(thematiqueId);
+    }
 }

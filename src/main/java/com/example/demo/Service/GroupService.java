@@ -20,4 +20,6 @@ public interface GroupService {
 
 	void updateGroupAndAssignUser(Utilisateur utilisateur, Groupe updatedGroup);
 
+	List<Groupe> getGroupsByUserId(Integer userId);
+
 }
