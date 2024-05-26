@@ -60,6 +60,9 @@ public class Utilisateur implements UserDetails {
     @Column(name = "Genre")
     private String genre;
 
+    @Column(name = "account")
+    private Boolean account;
+
     @Column(name = "Adresse")
     private String adresse;
 

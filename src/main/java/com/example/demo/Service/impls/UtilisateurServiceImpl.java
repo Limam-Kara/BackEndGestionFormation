@@ -111,7 +111,7 @@ public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsSe
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return utilisateurRepository.findByUsername(username)
+        return utilisateurRepository.findByUsernameAndAccountIsTrue(username)
                 .orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
 
