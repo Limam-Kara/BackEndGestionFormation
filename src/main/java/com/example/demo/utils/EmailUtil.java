@@ -17,7 +17,7 @@ public class EmailUtil {
         mimeMessageHelper.setTo(email);
         mimeMessageHelper.setSubject("Réinitialiser votre mot de passe");
 
-        String resetLink = "http://localhost:4200/authentication/resetPassword?token=" + token;
+        String resetLink = "http://localhost:4200/Authentication/ResetPassword?token=" + token;
 
         // Construct the HTML email body with expiration notice
         String emailBody = "<div style=\"font-family: Sen, sans-serif; background-color: #ffffff; padding: 20px;\">\n" +

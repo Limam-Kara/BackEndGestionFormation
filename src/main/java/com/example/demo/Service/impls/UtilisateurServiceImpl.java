@@ -106,7 +106,18 @@ public class UtilisateurServiceImpl implements UtilisateurService, UserDetailsSe
 
     @Override
     public void deleteUtilisateur(Integer id) {
-        utilisateurRepository.deleteById(id);
+        Optional<Utilisateur> existingUtilisateur = utilisateurRepository.findById(id);
+        if (existingUtilisateur.isPresent()) {
+            Utilisateur currentUtilisateur = existingUtilisateur.get();
+
+            currentUtilisateur.setAccount(false);
+            // Save the updated utilisateur
+            utilisateurRepository.save(currentUtilisateur);
+        } else {
+            // Handle the case where the utilisateur with the given ID does not exist
+            throw new RuntimeException("Utilisateur with ID " + id + " does not exist.");
+        }
+        //utilisateurRepository.deleteById(id);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.demo.model.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,6 +26,7 @@ public class Token {
 
     @ManyToOne
     @JoinColumn(name = "id_user")
+    @JsonBackReference
     private Utilisateur utilisateur;
 
 }
