@@ -14,7 +14,7 @@ public class Absence {
     private Integer id;
 
     @Column(name = "etat_absence")
-    private String etatAbsence;
+    private boolean etatAbsence;
 
     
     @Column(name = "date_absence")

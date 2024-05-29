@@ -51,7 +51,7 @@ public class AbsenceServiceImpl {
 	            if (existingAbsenceWithSameDate.isPresent()) {
 	                // If an absence with the same date and user exists, update it
 	                Absence existingAbsence = existingAbsenceWithSameDate.get();
-	                existingAbsence.setEtatAbsence(absence.getEtatAbsence());
+	                existingAbsence.setEtatAbsence(absence.isEtatAbsence());
 	                existingAbsence.setDateAbsence(absence.getDateAbsence());
 	                existingAbsence.setUtilisateur(absence.getUtilisateur());
 	                existingAbsence.setThematique(absence.getThematique());
